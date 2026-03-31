@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>道歉解压小人 - 让你的道歉更有创意</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>😔</text></svg>">
+    <title>道歉解压小人 - 测试版</title>
     <style>
         /* 基础重置 */
         * {
@@ -23,362 +22,189 @@
             overflow-x: hidden;
         }
 
-        .container {max-width: 500px;
+        .container {
+            max-width: 500px;
             margin: 0 auto;
             background: white;
             border-radius: 24px;
             padding: 30px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* 装饰元素 */
-        .container::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255, 107, 107, 0.05) 0%, transparent 70%);
-            z-index: 0;
         }
 
         /* 头部 */
         header {
             text-align: center;
             margin-bottom: 30px;
-            position: relative;
-            z-index: 1;
         }
 
         h1 {
-            color: #ff6b6b;font-size: 32px;
+            color: #ff6b6b;
+            font-size: 28px;
             margin-bottom: 10px;
-            font-weight: 700;
-            text-shadow: 0 2px 4px rgba(255, 107, 107, 0.2);
         }
 
         .subtitle {
             color: #666;
             font-size: 16px;
-            opacity: 0.8;
         }
 
-        /* 解压小人区域 */
-        .doll-section {
+        /* 解压小人 */
+        .doll-container {
             text-align: center;
             margin: 40px 0;
-            position: relative;
-            z-index: 1;
-        }
-
-        .doll-container {
-            position: relative;
-            display: inline-block;
-            margin-bottom: 20px;
         }
 
         .doll {
-            width: 200px;
-            height: 200px;
-            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
-            border-radius: 50%;
-            cursor: pointer;transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            width: 180px;
+            height: 180px;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);border-radius: 50%;
+            margin: 0 auto 20px;
+            cursor: pointer;
+            transition: all 0.2s;
             position: relative;
-            box-shadow: 
-                0 15px 35px rgba(255, 107, 107, 0.3),
-                inset 0 -8px 15px rgba(0, 0, 0, 0.1),
-                inset 0 8px 15px rgba(255, 255, 255, 0.7);
-            user-select: none;
-            touch-action: manipulation;
+            box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
         }
 
-        .doll.pressing {
+        .doll:active {
             transform: scale(0.85);
-            border-radius: 45% 55% 55% 45% / 50% 45% 55% 50%;
-            box-shadow: 
-                0 8px 20px rgba(255, 107, 107, 0.2),
-                inset 0 -5px 10px rgba(0, 0, 0, 0.08),
-                inset 0 5px 10px rgba(255, 255, 255, 0.5);
+            border-radius: 40% 60% 70% 30% / 50% 40% 60% 50%;
         }
 
         .face {
             position: absolute;
             top: 50%;
             left: 50%;
-            transform:translate(-50%, -50%);
-            font-size: 70px;
-            transition: all 0.3s ease;
-            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
-        }
-
-        .doll.pressing .face {
-            font-size: 65px;
+            transform: translate(-50%, -50%);
+            font-size: 60px;
         }
 
         .hint {
             color: #888;
             font-size: 14px;
-            margin-top: 15px;
-            opacity: 0.7;
-            transition: opacity 0.3s;
-        }
-
-        .doll-container:active .hint {
-            opacity: 0.5;
         }
 
         /* 摇晃动画 */
         @keyframes shake {
-            0%, 100% { transform: translateX(0) rotate(0deg); }
-            15% { transform: translateX(-12px) rotate(-3deg); }
-            30% { transform: translateX(10px) rotate(2deg); }
-            45% { transform: translateX(-8px) rotate(-2deg); }
-            60%{ transform: translateX(6px) rotate(1deg); }
-            75% { transform: translateX(-4px) rotate(-1deg); }
-        }
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-15px); }
+            75% { transform: translateX(15px); }}
 
         .shake {
-            animation: shake 0.6s ease-in-out;
+            animation: shake 0.5s ease-in-out;
         }
 
-        /* 消息区域 */
+        /* 消息框 */
         .message-box {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border-radius: 20px;
-            padding: 25px;
-            margin: 25px 0;
-            position: relative;
-            z-index: 1;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 
-                inset 0 2px 4px rgba(255, 255, 255, 0.8),
-                0 4px 12px rgba(0, 0, 0, 0.05);
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
         }
 
         .message {
-            font-size: 22px;
+            font-size: 20px;
             color: #ff6b6b;
-            min-height: 70px;
+            min-height: 60px;
             display: flex;
-            align-items:center;
+            align-items: center;
             justify-content: center;
-            text-align: center;
-            font-weight: 500;
-            line-height: 1.4;
-            padding: 10px;
-            transition: all 0.3s;
         }
 
         .message-controls {
             display: flex;
             justify-content: space-between;
-            margin-top: 20px;
-            gap: 10px;
+            margin-top: 15px;
         }
 
         .msg-btn {
-            flex: 1;
-            background: rgba(255, 255, 255, 0.9);
-            border: 1px solid #dee2e6;
-            padding: 12px;
-            border-radius: 12px;
-            cursor: pointer;
+            background: #e9ecef;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor:pointer;
             font-size: 14px;
             color: #495057;
-            transition: all 0.2s;
-            font-weight: 500;
-        }
-
-        .msg-btn:hover {
-            background: white;
-            border-color:#adb5bd;
-            transform: translateY(-1px);
-        }
-
-        .msg-btn:active {
-            transform: translateY(0);
         }
 
         /* 控制按钮 */
         .controls {
             display: flex;
-            flex-wrap: wrap;
+            flex-direction: column;
             gap: 15px;
             margin: 30px 0;
-            justify-content: center;
-            position: relative;
-            z-index: 1;
         }
 
         .control-btn {
-            padding: 16px 28px;
+            padding: 16px;
             border: none;
-            border-radius: 16px;
-            font-size: 17px;
+            border-radius: 12px;
+            font-size: 18px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            min-width: 140px;}
-
-        .control-btn:active {
-            transform: scale(0.95);
+            transition: all 0.3s;
         }
 
         .squeeze-btn {
             background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
             color: white;
-            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
-        }
-
-        .squeeze-btn:hover {
-            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.5);
-            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
         }
 
         .shake-btn {
             background: linear-gradient(135deg, #4ecdc4, #44a08d);
             color: white;
-            box-shadow: 0 6px 20px rgba(78, 205, 196, 0.4);
-        }
-
-        .shake-btn:hover {
-            box-shadow: 0 8px 25px rgba(78, 205, 196, 0.5);
-            transform: translateY(-2px);
+            box-shadow:0 4px 15px rgba(78, 205, 196, 0.4);
         }
 
         .reset-btn {
-            background: linear-gradient(135deg,#95a5a6, #7f8c8d);
+            background: linear-gradient(135deg, #95a5a6, #7f8c8d);
             color: white;
-            box-shadow: 0 6px 20px rgba(149, 165, 166, 0.4);
-        }
-
-        .reset-btn:hover {
-            box-shadow: 0 8px 25px rgba(149, 165, 166, 0.5);
-            transform: translateY(-2px);
-        }
-
-        /* 来源标识 */
-        .source-badge {
-            display: inline-block;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 500;
-            margin-top: 15px;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 4px 15px rgba(149, 165, 166, 0.4);
         }
 
         /* 页脚 */
         footer {
             text-align: center;
-            margin-top: 40px;
+            margin-top: 30px;
             color: #888;
-            font-size:14px;
-            position: relative;
-            z-index: 1;
-            padding-top: 20px;
-            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            font-size: 14px;
         }
 
-        .contact {
-            margin-top: 10px;
-            font-size: 13px;
-            opacity: 0.7;
-        }
-
-        /* 响应式设计 */
+        /* 响应式 */
         @media (max-width: 600px) {
             .container {
                 padding: 20px;
-                border-radius: 20px;
             }
             
             h1 {
-                font-size: 28px;
+                font-size: 24px;
             }
             
             .doll {
-                width: 180px;
-                height: 180px;
+                width: 150px;
+                height: 150px;
             }
             
             .face {
-                font-size: 60px;
-            }
-            
-            .message {
-                font-size: 20px;
-            }.control-btn {
-                padding: 14px 20px;
-                font-size: 16px;
-                min-width: 120px;
+                font-size: 50px;
             }
         }
-
-        @media (max-width: 400px) {
-            .controls {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .control-btn {
-                width: 100%;
-                max-width: 280px;
-            }
-        }
-
-        /* 加载动画 */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .container {
-            animation: fadeIn 0.6s ease-out;
-        }
-
-        /* 按压效果增强 */
-        .doll::after {
-            content: '';
-            position: absolute;
-            top: 0;left: 0;
-            right: 0;
-            bottom: 0;
-            border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8) 0%, transparent 70%);
-            opacity: 0.5;
-            transition: opacity 0.3s;
-        }
-
-        .doll.pressing::after {
-            opacity: 0.3;
-        }
-    </style>
-</head>
+    </style></head>
 <body>
     <div class="container">
         <header>
             <h1>😔 道歉解压小人</h1>
-            <p class="subtitle">按下小人，释放歉意，让道歉变得有趣</p>
+            <p class="subtitle">测试版本 - 按住挤压，点击摇晃</p>
         </header>
         
         <main>
-            <!-- 解压小人区域 -->
-            <div class="doll-section">
-                <div class="doll-container">
-                    <div class="doll" id="apologyDoll">
-                        <div class="face">😔</div>
-                    </div><div class="hint">按住挤压，点击按钮摇晃</div>
+            <!-- 解压小人 -->
+            <div class="doll-container">
+                <div class="doll" id="apologyDoll">
+                    <div class="face">😔</div>
                 </div>
+                <div class="hint">按住我挤压道歉</div>
             </div>
             
             <!-- 道歉文案 -->
@@ -386,31 +212,28 @@
                 <div class="message" id="apologyMessage">对不起，我错了...</div>
                 <div class="message-controls">
                     <button class="msg-btn" onclick="changeMessage(-1)">← 上一条</button>
-                    <button class="msg-btn" onclick="changeMessage(1)">下一条 →</button>
+                    <button class="msg-btn" onclick="changeMessage(1)">下一条→</button>
                 </div>
             </div>
             
             <!-- 控制按钮 -->
             <div class="controls">
-                <button class="control-btn squeeze-btn" onclick="squeezeDoll()">
-                    <span>🤏</span> 挤压道歉
-                </button>
-                <button class="control-btn shake-btn" onclick="shakeDoll()"><span>🔄</span> 摇晃道歉
-                </button>
-                <button class="control-btn reset-btn" onclick="resetDoll()">
-                    <span>🔄</span> 重置
-                </button>
+                <button class="control-btn squeeze-btn" onclick="squeezeDoll()">🤏 挤压道歉</button>
+                <button class="control-btn shake-btn" onclick="shakeDoll()">🔄 摇晃道歉</button>
+                <button class="control-btn reset-btn" onclick="resetDoll()">🔄 重置</button>
             </div>
             
-            <!-- 来源标识 -->
-            <div style="text-align:center;">
-                <div class="source-badge" id="sourceBadge">测试版本</div>
+            <!-- 状态提示 -->
+            <div style="text-align:center;margin-top:20px;">
+                <div style="display:inline-block;background:#667eea;color:white;padding:6px 16px;border-radius:20px;font-size:14px;">
+                    测试版本 v1.0
+                </div>
             </div>
         </main>
         
         <footer>
-            <p>© 2024 道歉解压小人 | 让你的每一次道歉都值得纪念</p>
-            <p class="contact">测试链接 | 正式版将部署到 aixuchen.com</p>
+            <p>© 2024 道歉解压小人| GitHub Pages测试版</p>
+            <p style="font-size:13px;margin-top:5px;">正式版将部署到 aixuchen.com</p>
         </footer>
     </div>
     
@@ -424,6 +247,96 @@
             "你对我真的很重要",
             "我会努力变得更好",
             "请接受我的歉意",
-
-"我保证不会再犯了",
-            "
+            "我保证不会再犯了",
+            "你的笑容对我很重要",
+            "让我们重新开始好吗？"
+        ];
+        
+        let currentMessageIndex = 0;
+        const doll = document.getElementById('apologyDoll');
+        const messageEl = document.getElementById('apologyMessage');
+        const face = doll.querySelector('.face');
+        
+        // 初始化
+        updateMessage();
+        
+        // 挤压功能
+        function squeezeDoll() {doll.style.transform = 'scale(0.8)';
+            face.textContent = '😫';
+            
+            setTimeout(() => {
+                doll.style.transform = 'scale(1)';
+                face.textContent = '😊';
+            }, 500);
+        }
+        
+        // 摇晃功能
+        function shakeDoll() {
+            doll.classList.add('shake');
+            face.textContent = '😵';
+            
+            setTimeout(() => {
+                doll.classList.remove('shake');
+                face.textContent = '😊';
+            }, 500);
+        }
+        
+        // 重置
+        function resetDoll() {
+            doll.style.transform = 'scale(1)';
+            doll.classList.remove('shake');
+            face.textContent = '😔';
+            currentMessageIndex = 0;
+            updateMessage();
+        }// 切换文案
+        function changeMessage(direction) {
+            currentMessageIndex += direction;
+            
+            if (currentMessageIndex < 0) {
+                currentMessageIndex = apologyMessages.length - 1;
+            } else if (currentMessageIndex >= apologyMessages.length) {
+                currentMessageIndex = 0;
+            }
+            
+            updateMessage();
+        }
+        
+        function updateMessage() {
+            messageEl.textContent = apologyMessages[currentMessageIndex];
+        }
+        
+        // 触摸事件
+        doll.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            doll.style.transform = 'scale(0.85)';
+            face.textContent = '😊';
+        });
+        
+        doll.addEventListener('touchend', (e) => {e.preventDefault();
+            doll.style.transform = 'scale(1)';
+            setTimeout(() => { face.textContent = '😔'; }, 300);
+        });
+        
+        // 鼠标事件
+        doll.addEventListener('mousedown', () => {
+            doll.style.transform = 'scale(0.85)';
+            face.textContent = '😊';
+        });
+        
+        doll.addEventListener('mouseup', () => {
+            doll.style.transform = 'scale(1)';
+            setTimeout(() => { face.textContent = '😔'; }, 300);
+        });
+        
+        doll.addEventListener('mouseleave', () => {
+            doll.style.transform = 'scale(1)';
+            face.textContent = '😔';
+        });
+        
+        // 自动切换文案（每5秒）
+        setInterval(() => {
+            currentMessageIndex = (currentMessageIndex + 1) % apologyMessages.length;updateMessage();
+        }, 5000);
+    </script>
+</body>
+</html>
